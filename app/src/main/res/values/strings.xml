@@ -1,0 +1,30 @@
+<resources>
+    <!-- App Strings -->
+    <string name="app_name">Scrawl</string>
+    <string name="title_activity_main">MainActivity</string>
+    <string name="title_activity_settings">Settings</string>
+
+    <!--Menu Items-->
+    <string name="action_settings">Settings</string>
+
+    <!-- Setting Strings -->
+    <string name="pref_wifi_key">wifi_only</string>
+    <string name="pref_wifi_label">Wifi Only</string>
+    <string name="pref_wifi_summary_on">Notes will only sync when on wifi</string>
+    <string name="pref_wifi_summary_off">Notes will sync on wifi or mobile data</string>
+
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password (optional)</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+
+    <string name="password">Password</string>
+    <string name="email">Email</string>
+    <string name="login">Login</string>
+    <string name="logo">logo</string>
+</resources>

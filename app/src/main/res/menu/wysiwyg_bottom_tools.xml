@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <group android:id="@+id/tool_group_font_style">
+    <item
+        android:id="@+id/tool_bold"
+        android:icon="@drawable/ic_format_bold_black_24dp"
+        app:showAsAction="always"
+        android:title="Bold" />
+
+    <item
+        android:id="@+id/tool_italics"
+        android:icon="@drawable/ic_format_italic_black_24dp"
+        app:showAsAction="always"
+        android:title="Italics" />
+
+    <item
+        android:id="@+id/tool_underline"
+        android:icon="@drawable/ic_format_underlined_black_24dp"
+        app:showAsAction="always"
+        android:title="Underline" />
+
+    <item
+        android:id="@+id/tool_strikethrough"
+        android:icon="@drawable/ic_format_strikethrough_black_24dp"
+        app:showAsAction="always"
+        android:title="Strikethrough" />
+    </group>
+
+    <group android:id="@+id/tool_group_align">
+
+        <item
+            android:id="@+id/tool_align_left"
+            android:icon="@drawable/ic_format_align_left_black_24dp"
+            app:showAsAction="always"
+            android:title="Align Left" />
+
+        <item
+            android:id="@+id/tool_align_center"
+            android:icon="@drawable/ic_format_align_center_black_24dp"
+            app:showAsAction="always"
+            android:title="Align Left" />
+
+        <item
+            android:id="@+id/tool_align_right"
+            android:icon="@drawable/ic_format_align_right_black_24dp"
+            app:showAsAction="always"
+            android:title="Align Left" />
+
+        <item
+            android:id="@+id/tool_align_justify"
+            android:icon="@drawable/ic_format_align_justify_black_24dp"
+            app:showAsAction="always"
+            android:title="Align Left" />
+
+
+    </group>
+
+</menu>
