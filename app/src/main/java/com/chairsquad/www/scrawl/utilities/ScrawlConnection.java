@@ -19,8 +19,8 @@ import java.net.URL;
 public class ScrawlConnection {
 
     public static final int API_VERSION = 1;
-    public static final String BASE_URL = "http://192.168.0.15:9292/";
-//    public static final String BASE_URL = "http://scrawl-app-demo.herokuapp.com/";
+//    public static final String BASE_URL = "http://192.168.0.15:9292/";
+    public static final String BASE_URL = "http://scrawl-app-demo.herokuapp.com/";
     public static final String API_URL = BASE_URL + "api/v"+API_VERSION+"/";
 
     private static AsyncHttpClient client = new AsyncHttpClient();
