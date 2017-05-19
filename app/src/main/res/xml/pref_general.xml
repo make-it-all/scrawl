@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -9,6 +10,9 @@
         android:summaryOn="@string/pref_wifi_summary_on"
         android:summaryOff="@string/pref_wifi_summary_off"/>
 
+    <Preference
+        android:key="Logout" app:title="Logout"
+        android:summary="Signed in as ME"/>
 
 
 </PreferenceScreen>

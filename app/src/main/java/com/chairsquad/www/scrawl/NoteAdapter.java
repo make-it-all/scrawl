@@ -6,9 +6,11 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.chairsquad.www.scrawl.data.NotesContract.NoteEntry;
+import com.chairsquad.www.scrawl.utilities.NoteUtils;
 
 /**
  * Created by henry on 18/04/17.
@@ -19,10 +21,16 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
     private Cursor mCursor;
     private Context mContext;
     private NoteAdapterOnClickHandler mClickHandler;
+    private NoteAdapterOnLongClickHandler mLongClickHandler;
 
     public interface  NoteAdapterOnClickHandler {
         void onNoteClick(int noteId);
     }
+
+    public interface NoteAdapterOnLongClickHandler {
+        void onNoteLongClick(int noteId, boolean state);
+    }
+
 
     public NoteAdapter(Context context) {
         mContext = context;
@@ -30,6 +38,9 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
     public void setOnClickHandler(NoteAdapterOnClickHandler handler) {
         mClickHandler = handler;
+    }
+    public void setOnLongClickHandler(NoteAdapterOnLongClickHandler handler) {
+        mLongClickHandler = handler;
     }
 
     @Override
@@ -49,9 +60,15 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
 
         String name = mCursor.getString(mCursor.getColumnIndex(NoteEntry.COLUMN_NAME));
         String body = mCursor.getString(mCursor.getColumnIndex(NoteEntry.COLUMN_BODY));
+        boolean starred = mCursor.getInt(mCursor.getColumnIndex(NoteEntry.COLUMN_IS_STARRED)) > 0;
+        String updatedAt = mCursor.getString(mCursor.getColumnIndex(NoteEntry.COLUMN_UPDATED_AT));
         int id = mCursor.getInt(mCursor.getColumnIndex(NoteEntry._ID));
 
+
         holder.mNoteTextView.setText(name);
+        holder.mNoteBodyTextView.setText(NoteUtils.stripHTML(body));
+        holder.mNoteUpdatedView.setText(NoteUtils.timeAgoInWords(Long.valueOf(updatedAt)));
+        holder.setStarred(starred);
         holder.setId(id);
     }
 
@@ -67,14 +84,23 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             notifyDataSetChanged();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+    public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener, View.OnLongClickListener {
         public final TextView mNoteTextView;
+        public final TextView mNoteBodyTextView;
+        public final TextView mNoteUpdatedView;
+        public final ImageView mNoteStarredView;
+
         private int mId;
+        private boolean mStarred = false;
 
         public ViewHolder(View view) {
             super(view);
             mNoteTextView = (TextView) view.findViewById(R.id.tv_note_title);
+            mNoteBodyTextView = (TextView) view.findViewById(R.id.tv_note_body);
+            mNoteUpdatedView = (TextView) view.findViewById(R.id.tv_updated_time_ago);
+            mNoteStarredView = (ImageView) view.findViewById(R.id.iv_note_starred);
             view.setOnClickListener(this);
+            view.setOnLongClickListener(this);
         }
 
         @Override
@@ -88,8 +114,25 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.ViewHolder> {
             mId = id;
         }
 
+        public void setStarred(boolean state) {
+            mStarred = state;
+            if (mStarred) {
+                mNoteStarredView.setImageResource(R.drawable.ic_star_black_24dp);
+            } else {
+                mNoteStarredView.setImageResource(R.drawable.ic_star_border_black_24dp);
+            }
+        }
+
         public int getId() {
             return mId;
+        }
+
+        @Override
+        public boolean onLongClick(View v) {
+            if (mLongClickHandler != null) {
+                mLongClickHandler.onNoteLongClick(mId, mStarred);
+            }
+            return true;
         }
     }
 

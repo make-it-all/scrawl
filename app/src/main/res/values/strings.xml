@@ -11,7 +11,7 @@
     <string name="pref_wifi_key">wifi_only</string>
     <string name="pref_wifi_label">Wifi Only</string>
     <string name="pref_wifi_summary_on">Notes will only sync when on wifi</string>
-    <string name="pref_wifi_summary_off">Notes will sync on wifi or mobile data</string>
+    <string name="pref_wifi_summary_off">Notes will sync via wifi or mobile data</string>
 
     <!-- Strings related to login -->
     <string name="prompt_email">Email</string>
@@ -27,4 +27,5 @@
     <string name="email">Email</string>
     <string name="login">Login</string>
     <string name="logo">logo</string>
+    <string name="action_help">Help</string>
 </resources>

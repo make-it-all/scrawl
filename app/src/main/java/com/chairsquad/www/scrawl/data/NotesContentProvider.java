@@ -43,7 +43,17 @@ public class NotesContentProvider extends ContentProvider {
         int match = sUriMatcher.match(uri);
         switch (match) {
             case NOTES:
-                cursor = mOpenHelper.getReadableDatabase().query(
+                if (selection != null && selection.equals("ALL")) {
+                    cursor = mOpenHelper.getReadableDatabase().query(
+                            NoteEntry.TABLE_NAME,
+                            projection,
+                            null,
+                            null,
+                            null,
+                            null,
+                            sortOrder);
+                } else {
+                    cursor = mOpenHelper.getReadableDatabase().query(
                         NoteEntry.TABLE_NAME,
                         projection,
                         NoteEntry.COLUMN_IS_DELETED + "<>?",
@@ -51,6 +61,7 @@ public class NotesContentProvider extends ContentProvider {
                         null,
                         null,
                         sortOrder);
+                }
                 break;
             case NOTE_WITH_ID:
                 cursor = mOpenHelper.getReadableDatabase().query(
@@ -96,7 +107,17 @@ public class NotesContentProvider extends ContentProvider {
         int rowsUpdated = 0;
         int match = sUriMatcher.match(uri);
         switch (match) {
+            case NOTES:
+                values.put(NoteEntry.COLUMN_UPDATED_AT, System.currentTimeMillis());
+                rowsUpdated = mOpenHelper.getWritableDatabase().update(
+                        NoteEntry.TABLE_NAME,
+                        values,
+                        selection,
+                        selectionArgs
+                );
+                break;
             case NOTE_WITH_ID:
+                values.put(NoteEntry.COLUMN_UPDATED_AT, System.currentTimeMillis());
                 rowsUpdated = mOpenHelper.getWritableDatabase().update(
                         NoteEntry.TABLE_NAME,
                         values,
@@ -118,6 +139,7 @@ public class NotesContentProvider extends ContentProvider {
             case NOTE_WITH_ID:
                 ContentValues values = new ContentValues();
                 values.put(NoteEntry.COLUMN_IS_DELETED, true);
+                values.put(NoteEntry.COLUMN_UPDATED_AT, System.currentTimeMillis());
                 rowsDeleted = mOpenHelper.getWritableDatabase().update(
                         NoteEntry.TABLE_NAME,
                         values,

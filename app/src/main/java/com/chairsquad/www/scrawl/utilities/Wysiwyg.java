@@ -131,6 +131,19 @@ public class Wysiwyg extends WebView {
     }
 
 
+    public void setLeftalign() {
+        mState.triggerTool("justifyLeft");
+    }
+    public void setCenteralign() {
+        mState.triggerTool("justifyCenter");
+    }
+    public void setRightalign() {
+        mState.triggerTool("justifyRight");
+    }
+    public void setJustifyalign() {
+        mState.triggerTool("justifyFull");
+    }
+
     private void runScript(final String script) {
         if (scriptLoaded) {
             post(new Runnable() {

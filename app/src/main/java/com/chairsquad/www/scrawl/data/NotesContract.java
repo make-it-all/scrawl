@@ -19,13 +19,19 @@ public class NotesContract {
                 .appendPath(PATH_NOTES)
                 .build();
         public static String TABLE_NAME = "notes";
+        public static String COLUMN_REMOTE_ID = "remote_id";
         public static String COLUMN_NAME = "name";
         public static String COLUMN_BODY = "body";
+        public static String COLUMN_IS_STARRED = "is_starred";
         public static String COLUMN_IS_DELETED = "is_deleted";
+        public static String COLUMN_UPDATED_AT = "updated_at";
         public static String COLUMN_CREATED_AT = "created_at";
 
         public static Uri buildUriForId(int id) {
             return CONTENT_URI.buildUpon().appendPath(String.valueOf(id)).build();
+        }
+        public static String getSelectionForUpdatedSince(long time) {
+            return COLUMN_UPDATED_AT + " > '" + time + "'";
         }
     }
 

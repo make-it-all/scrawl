@@ -28,6 +28,7 @@ import android.widget.TextView;
 
 import com.chairsquad.www.scrawl.R;
 import com.chairsquad.www.scrawl.data.NotesContract;
+import com.chairsquad.www.scrawl.utilities.NoteUtils;
 import com.chairsquad.www.scrawl.utilities.Wysiwyg;
 import com.facebook.stetho.Stetho;
 
@@ -75,6 +76,8 @@ public class NoteActivity extends AppCompatActivity implements
                 startEditingTitle();
             }
         });
+
+        Log.d("STARTING", "NOTES ACTIVITY");
 
         //Load note data
         mUri = getIntent().getData();
@@ -214,6 +217,18 @@ public class NoteActivity extends AppCompatActivity implements
             case R.id.tool_strikethrough:
                 mBodyWysiwyg.setStrikethough();
                 break;
+            case R.id.tool_align_left:
+                mBodyWysiwyg.setLeftalign();
+                break;
+            case R.id.tool_align_center:
+                mBodyWysiwyg.setCenteralign();
+                break;
+            case R.id.tool_align_right:
+                mBodyWysiwyg.setRightalign();
+                break;
+            case R.id.tool_align_justify:
+                mBodyWysiwyg.setJustifyalign();
+                break;
             default:
                 return false;
         }
@@ -235,6 +250,18 @@ public class NoteActivity extends AppCompatActivity implements
         } else if (tool.equals("strikethrough")) {
             View view = mBottomEditingTools.findViewById(R.id.tool_strikethrough);
             setToolSelected(view, enabled);
+        } else if (tool.equals("justifyLeft")) {
+            View view = mBottomEditingTools.findViewById(R.id.tool_align_left);
+            setToolSelected(view, enabled);
+        } else if (tool.equals("justifyCenter")) {
+            View view = mBottomEditingTools.findViewById(R.id.tool_align_center);
+            setToolSelected(view, enabled);
+        } else if (tool.equals("justifyRight")) {
+            View view = mBottomEditingTools.findViewById(R.id.tool_align_right);
+            setToolSelected(view, enabled);
+        } else if (tool.equals("justifyFull")) {
+            View view = mBottomEditingTools.findViewById(R.id.tool_align_justify);
+            setToolSelected(view, enabled);
         }
     }
 
@@ -250,7 +277,7 @@ public class NoteActivity extends AppCompatActivity implements
         ContentValues values = new ContentValues();
         values.put(NotesContract.NoteEntry.COLUMN_NAME, mTitleTextView.getText().toString());
         values.put(NotesContract.NoteEntry.COLUMN_BODY, mBodyWysiwyg.getHtml());
-        Log.d("SCRAWL", mBodyWysiwyg.getHtml());
+        values.put(NotesContract.NoteEntry.COLUMN_UPDATED_AT, System.currentTimeMillis());
         if (mNewNote) {
             mUri = getContentResolver().insert(NotesContract.NoteEntry.CONTENT_URI, values);
             mNewNote = false;
@@ -296,9 +323,12 @@ public class NoteActivity extends AppCompatActivity implements
     }
 
     private Intent createShareIntent() {
+        String title = mTitleTextView.getText().toString();
+        String body = NoteUtils.stripHTML(mBodyWysiwyg.getHtml());
         Intent shareIntent = ShareCompat.IntentBuilder.from(this)
                 .setType("text/plain")
-                .setText("Sharing a note!")
+                .setSubject(title)
+                .setText(title + "\n" + body)
                 .getIntent();
         shareIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_DOCUMENT);
         return shareIntent;

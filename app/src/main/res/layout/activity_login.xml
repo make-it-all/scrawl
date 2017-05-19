@@ -74,12 +74,35 @@
                 android:layout_marginTop="16dp"
                 android:text="@string/login"
                 android:textStyle="bold" />
+            <LinearLayout
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:paddingTop="8dp">
+
+            <TextView
+                android:id="@+id/tv_sign_up"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="Sign Up"/>
+
+            <TextView
+                android:id="@+id/tv_forgot_password"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:textAlignment="center"
+                android:text="Forgot Password?"/>
+
+            </LinearLayout>
 
         </LinearLayout>
     </ScrollView>
     <FrameLayout
         android:layout_width="match_parent"
-        android:layout_height="100dp">
+        android:layout_height="70dp">
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

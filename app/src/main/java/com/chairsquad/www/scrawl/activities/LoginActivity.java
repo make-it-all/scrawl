@@ -1,6 +1,7 @@
 package com.chairsquad.www.scrawl.activities;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 
 import com.chairsquad.www.scrawl.R;
 import com.chairsquad.www.scrawl.utilities.ScrawlConnection;
@@ -17,16 +19,13 @@ import com.chairsquad.www.scrawl.utilities.ScrawlConnection;
  */
 public class LoginActivity extends AppCompatActivity {
 
-    /**
-     * Id to identity READ_CONTACTS permission request.
-     */
-    private static final int REQUEST_READ_CONTACTS = 0;
 
     /**
      * Keep track of the login task to ensure we can cancel it if requested.
      */
     private UserLoginTask mAuthTask = null;
     private ScrawlConnection mScrawlConnection;
+
     // UI references.
     private View mProgressBar;
     private View mLoginForm;
@@ -34,12 +33,16 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mPasswordEditText;
     private Button mSubmitButton;
 
+    private TextView mSignup;
+    private TextView mForgotPassword;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        mScrawlConnection = new ScrawlConnection(this);
+
+        if (ScrawlConnection.isLoggedIn(this)) onSuccessfulLogin();
 
         // Get UI references
         mProgressBar = findViewById(R.id.login_progress);
@@ -47,6 +50,28 @@ public class LoginActivity extends AppCompatActivity {
         mEmailEditText = (EditText) findViewById(R.id.login_form_email_et);
         mPasswordEditText = (EditText) findViewById(R.id.login_form_password_et);
         mSubmitButton = (Button) findViewById(R.id.login_form_submit_btn);
+
+        mSignup = (TextView) findViewById(R.id.tv_sign_up);
+        mForgotPassword = (TextView) findViewById(R.id.tv_forgot_password);
+
+        mSignup.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String url = ScrawlConnection.BASE_URL + "sign_up";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
+        mForgotPassword.setOnClickListener(new View.OnClickListener(){
+            @Override
+            public void onClick(View v) {
+                String url = ScrawlConnection.BASE_URL + "passwords/new";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        });
 
         // Set up the login form.
         mSubmitButton.setOnClickListener(new View.OnClickListener() {
@@ -57,6 +82,17 @@ public class LoginActivity extends AppCompatActivity {
         });
 
     }
+
+
+    private void onSuccessfulLogin() {
+        finish();
+    }
+
+    private void onFailedLogin() {
+        mPasswordEditText.setError(getString(R.string.error_incorrect_password));
+        mPasswordEditText.requestFocus();
+    }
+
     /**
      * Attempts to sign in or register the account specified by the login form.
      * If there are form errors (invalid email, missing fields, etc.), the
@@ -119,20 +155,9 @@ public class LoginActivity extends AppCompatActivity {
     /**
      * Shows the progress UI and hides the login form.
      */
-    private void showProgress(final boolean show) {
+    private void showProgress(boolean show) {
         mLoginForm.setVisibility(show ? View.GONE : View.VISIBLE);
         mProgressBar.setVisibility(show ? View.VISIBLE : View.GONE);
-    }
-
-    private void onSuccessfulLogin() {
-        Intent intent = new Intent(this, AllNotesActivity.class);
-        startActivity(intent);
-        finish();
-    }
-
-    private void onFailedLogin() {
-        mPasswordEditText.setError(getString(R.string.error_incorrect_password));
-        mPasswordEditText.requestFocus();
     }
 
     /**
@@ -151,7 +176,7 @@ public class LoginActivity extends AppCompatActivity {
 
         @Override
         protected Boolean doInBackground(Void... params) {
-            return mScrawlConnection.login(mEmail, mPassword);
+            return mScrawlConnection.login(LoginActivity.this, mEmail, mPassword);
         }
 
         @Override

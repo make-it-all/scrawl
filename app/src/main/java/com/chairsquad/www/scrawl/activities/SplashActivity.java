@@ -15,31 +15,22 @@ import com.chairsquad.www.scrawl.utilities.ScrawlConnection;
 
 public class SplashActivity extends AppCompatActivity {
 
+    ScrawlConnection mScrawlConnection;
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
         setContentView(R.layout.activity_splash);
 
-        ScrawlConnection scrawlConnection = new ScrawlConnection(this);
-
-        final Intent intent;
-        if (!scrawlConnection.isLoggedIn()) {
-            intent = new Intent(this, LoginActivity.class);
-        } else {
-            intent = new Intent(this, AllNotesActivity.class);
-        }
-
+        final Intent intent = new Intent(this, MainActivity.class);
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
                 startActivity(intent);
-
                 finish();
-
             }
         }, 2000);
-
     }
 
 

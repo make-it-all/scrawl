@@ -29,7 +29,7 @@ var setPadding = function(left, top, right, bottom) {
 /** Tools fully implemented with execCommand.
 *   Associated functions are generated programmatically for each.
 */
-var SIMPLE_TOOLS = ['bold', 'italic', 'underline', 'strikethrough']
+var SIMPLE_TOOLS = ['bold', 'italic', 'underline', 'strikethrough', 'justifyLeft', 'justifyCenter', 'justifyRight', 'justifyFull']
 for(tool of SIMPLE_TOOLS) {
   Tools[tool] = (function(tool){
     tool_funcs = {};
