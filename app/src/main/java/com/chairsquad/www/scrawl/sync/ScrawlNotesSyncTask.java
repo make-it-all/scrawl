@@ -93,6 +93,7 @@ public class ScrawlNotesSyncTask {
             }
 
             JSONArray notes = response.getJSONArray("notes");
+            Log.d("NOTES RECIEVED: ", notes.toString());
             for(int i=0;i<notes.length();i++){
                 JSONObject note = notes.getJSONObject(i);
                 String remote_id = note.getString("id");
